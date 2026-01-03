@@ -1,0 +1,39 @@
+# API (CodeIgniter 4)
+api/.env
+api/writable/
+api/vendor/
+api/composer.lock
+
+# Web (Next.js Frontend)
+web/node_modules/
+web/.next/
+web/out/
+web/build/
+web/.env.local
+web/.env.production.local
+web/.env.development.local
+web/.DS_Store
+web/*.pem
+
+# Web Admin (Next.js Dashboard)
+web-admin/node_modules/
+web-admin/.next/
+web-admin/out/
+web-admin/build/
+web-admin/.env.local
+web-admin/.env.production.local
+web-admin/.env.development.local
+web-admin/.DS_Store
+web-admin/*.pem
+
+# Reference Code (no gitignore needed)
+
+# General
+.DS_Store
+*.log
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.iml
