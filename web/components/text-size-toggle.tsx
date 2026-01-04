@@ -17,6 +17,7 @@ const TEXT_SIZES = {
 }
 
 export function TextSizeToggle() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [textSize, setTextSize] = React.useState<keyof typeof TEXT_SIZES>("normal")
 
   React.useEffect(() => {

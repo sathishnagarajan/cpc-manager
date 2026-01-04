@@ -93,7 +93,7 @@ class ApiService {
     return response.data;
   }
 
-  async createEnquiry(data: any) {
+  async createEnquiry(data: Record<string, unknown>) {
     console.log('Sending enquiry data:', data);
     console.log('API URL:', `${API_URL}/enquiries`);
     const response = await this.api.post('/enquiries', data);
@@ -101,7 +101,7 @@ class ApiService {
     return response.data;
   }
 
-  async updateEnquiry(id: number, data: any) {
+  async updateEnquiry(id: number, data: Record<string, unknown>) {
     const response = await this.api.put(`/enquiries/${id}`, data);
     return response.data;
   }
@@ -120,22 +120,22 @@ class ApiService {
   }
 
   // Generic methods
-  async get(url: string, config?: any) {
+  async get(url: string, config?: Record<string, unknown>) {
     const response = await this.api.get(url, config);
     return response.data;
   }
 
-  async post(url: string, data?: any, config?: any) {
+  async post(url: string, data?: Record<string, unknown>, config?: Record<string, unknown>) {
     const response = await this.api.post(url, data, config);
     return response.data;
   }
 
-  async put(url: string, data?: any, config?: any) {
+  async put(url: string, data?: Record<string, unknown>, config?: Record<string, unknown>) {
     const response = await this.api.put(url, data, config);
     return response.data;
   }
 
-  async delete(url: string, config?: any) {
+  async delete(url: string, config?: Record<string, unknown>) {
     const response = await this.api.delete(url, config);
     return response.data;
   }
