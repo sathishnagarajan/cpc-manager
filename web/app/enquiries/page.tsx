@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -39,7 +39,7 @@ export default function EnquiriesPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { toast } = useToast();
 
-  const loadEnquiries = async () => {
+  const loadEnquiries = useCallback(async () => {
     try {
       setLoading(true);
       const params: Record<string, string | number> = {
@@ -64,11 +64,11 @@ export default function EnquiriesPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, statusFilter]);
 
   useEffect(() => {
     loadEnquiries();
-  }, [page, statusFilter, loadEnquiries]);
+  }, [loadEnquiries]);
 
   const getEnquiryTypeLabel = (value?: string) => {
     if (!value) return '-';

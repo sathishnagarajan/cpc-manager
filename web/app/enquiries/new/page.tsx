@@ -146,7 +146,8 @@ export default function NewEnquiryPage() {
         setErrors(backendErrors);
         alert('Please check the form for errors: ' + Object.values(backendErrors).join(', '));
       } else {
-        const errorMsg = error.response?.data?.message || error.message || 'Unknown error occurred';
+        const axiosErr = error as { response?: { data?: { message?: string } }; message?: string };
+        const errorMsg = axiosErr.response?.data?.message || axiosErr.message || 'Unknown error occurred';
         alert('Failed to create enquiry: ' + errorMsg);
       }
     } finally {
