@@ -117,21 +117,22 @@ export default function NewEnquiryPage() {
       if (response.status === 'success') {
         router.push('/enquiries');
       }
-    } catch (error: any) {
+    } catch (error) {
       // Log everything about the error
       console.error('=== ERROR CAUGHT ===');
       console.error('Error object:', error);
-      console.error('Error message:', error.message);
-      console.error('Error code:', error.code);
-      console.error('Error response:', error.response);
-      console.error('Error response data:', error.response?.data);
-      console.error('Error response status:', error.response?.status);
+      console.error('Error message:', (error as { message?: string }).message);
+      console.error('Error code:', (error as { code?: string }).code);
+      console.error('Error response:', (error as { response?: { data?: { messages?: Record<string, string | string[]> }; status?: number } }).response);
+      console.error('Error response data:', (error as { response?: { data?: unknown } }).response?.data);
+      console.error('Error response status:', (error as { response?: { status?: number } }).response?.status);
       console.error('===================');
       
       // Handle validation errors from backend
-      if (error.response?.data?.messages) {
+      const axiosError = error as { response?: { data?: { messages?: Record<string, string | string[]> } } };
+      if (axiosError.response?.data?.messages) {
         const backendErrors: Record<string, string> = {};
-        const messages = error.response.data.messages;
+        const messages = axiosError.response.data.messages;
         
         // Convert backend validation messages to our error format
         Object.keys(messages).forEach(key => {

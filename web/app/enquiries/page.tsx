@@ -39,14 +39,10 @@ export default function EnquiriesPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { toast } = useToast();
 
-  useEffect(() => {
-    loadEnquiries();
-  }, [page, statusFilter]);
-
   const loadEnquiries = async () => {
     try {
       setLoading(true);
-      const params: any = {
+      const params: Record<string, string | number> = {
         page,
         per_page: 20,
       };
@@ -70,16 +66,9 @@ export default function EnquiriesPage() {
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    const statusConfig = ENQUIRY_STATUS.find(s => s.value === status);
-    if (!statusConfig) return null;
-
-    return (
-      <Badge className={`${statusConfig.color} text-white`}>
-        {statusConfig.label}
-      </Badge>
-    );
-  };
+  useEffect(() => {
+    loadEnquiries();
+  }, [page, statusFilter, loadEnquiries]);
 
   const getEnquiryTypeLabel = (value?: string) => {
     if (!value) return '-';
