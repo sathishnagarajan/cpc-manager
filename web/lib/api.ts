@@ -94,7 +94,10 @@ class ApiService {
   }
 
   async createEnquiry(data: any) {
+    console.log('Sending enquiry data:', data);
+    console.log('API URL:', `${API_URL}/enquiries`);
     const response = await this.api.post('/enquiries', data);
+    console.log('Enquiry created successfully:', response.data);
     return response.data;
   }
 
@@ -105,6 +108,14 @@ class ApiService {
 
   async deleteEnquiry(id: number) {
     const response = await this.api.delete(`/enquiries/${id}`);
+    return response.data;
+  }
+
+  // Chennai areas
+  async getChennaiAreas(query?: string) {
+    const response = await this.api.get('/chennai-areas', {
+      params: query ? { q: query } : {},
+    });
     return response.data;
   }
 
