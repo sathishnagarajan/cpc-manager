@@ -24,17 +24,26 @@ class Cors extends BaseConfig
      *      maxAge: int,
      *  }
      */
-    public array $default = [
-        /**
-         * Origins for the `Access-Control-Allow-Origin` header.
-         *
-         * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
-         *
-         * E.g.:
-         *   - ['http://localhost:8080']
-         *   - ['https://www.example.com']
-         */
-        'allowedOrigins' => ['http://localhost:3000', 'http://localhost:3001'],
+    public array $default = [];
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $allowedOrigins = env('cors.allowedOrigins', 'http://localhost:3000,http://localhost:3001');
+        $originsArray = array_map('trim', explode(',', $allowedOrigins));
+
+        $this->default = [
+            /**
+             * Origins for the `Access-Control-Allow-Origin` header.
+             *
+             * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin
+             *
+             * E.g.:
+             *   - ['http://localhost:8080']
+             *   - ['https://www.example.com']
+             */
+            'allowedOrigins' => $originsArray,
 
         /**
          * Origin regex patterns for the `Access-Control-Allow-Origin` header.
@@ -100,6 +109,7 @@ class Cors extends BaseConfig
          *
          * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Max-Age
          */
-        'maxAge' => 7200,
-    ];
+            'maxAge' => 7200,
+        ];
+    }
 }
