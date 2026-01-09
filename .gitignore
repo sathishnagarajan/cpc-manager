@@ -28,6 +28,24 @@ web-admin/*.pem
 
 # Reference Code (no gitignore needed)
 
+# Android
+android/.gradle/
+android/.idea/
+android/local.properties
+android/build/
+android/app/build/
+android/captures/
+android/.externalNativeBuild/
+android/.cxx/
+android/*.iml
+android/*.apk
+android/*.aab
+android/*.ap_
+android/*.dex
+android/gradlew
+android/gradlew.bat
+android/gradle/
+
 # General
 .DS_Store
 *.log
