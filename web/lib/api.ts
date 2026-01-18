@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://apidev.chennaiphysiocare.com/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 class ApiService {
   private api: AxiosInstance;

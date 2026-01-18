@@ -19,10 +19,15 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
         return $response;
     });
     
+    // Test route
+    $routes->get('test', function() {
+        return service('response')->setJSON(['message' => 'API is working']);
+    });
+    
     // Auth routes (no authentication required)
     $routes->post('auth/login', 'AuthController::login');
     
-    // Temporarily unprotected routes for testing (Option A)
+    // Temporarily unprotected routes for testing
     // TODO: Add back ['filter' => 'tokens'] when authentication is ready
     
     // Enquiries - temporarily unprotected
@@ -37,13 +42,17 @@ $routes->group('api', ['namespace' => 'App\Controllers\API'], function ($routes)
         'except'     => 'new,edit',
     ]);
     
+    // Users (admin only) - protected with token authentication
+    $routes->resource('users', [
+        'controller' => 'UserController',
+        'except'     => 'new,edit',
+        'filter'     => 'tokens',
+    ]);
+    
     // Get Chennai areas
     $routes->get('chennai-areas', 'EnquiryController::getChennaiAreas');
     
-    // Protected routes (require authentication) - for later
-    // $routes->group('', ['filter' => 'tokens'], function ($routes) {
-    //     // Auth
-    //     $routes->post('auth/logout', 'AuthController::logout');
-    //     $routes->get('auth/me', 'AuthController::me');
-    // });
+    // Auth endpoints
+    $routes->post('auth/logout', 'AuthController::logout');
+    $routes->get('auth/me', 'AuthController::me');
 });
