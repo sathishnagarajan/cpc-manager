@@ -15,12 +15,16 @@ class AuthController extends ResourceController
      */
     public function login()
     {
+        log_message('info', 'Login attempt started');
+        log_message('info', 'Request body: ' . $this->request->getBody());
+        
         $rules = [
             'email'    => 'required|valid_email',
             'password' => 'required',
         ];
 
         if (!$this->validate($rules)) {
+            log_message('error', 'Validation failed: ' . json_encode($this->validator->getErrors()));
             return $this->failValidationErrors($this->validator->getErrors());
         }
 
@@ -28,19 +32,28 @@ class AuthController extends ResourceController
             'email'    => $this->request->getJsonVar('email'),
             'password' => $this->request->getJsonVar('password'),
         ];
+        
+        log_message('info', 'Attempting authentication for: ' . $credentials['email']);
 
-        $authenticator = auth('tokens')->getAuthenticator();
+        // Use session authenticator for login, not tokens
+        $authenticator = auth('session')->getAuthenticator();
 
         $result = $authenticator->attempt($credentials);
 
         if (!$result->isOK()) {
+            log_message('error', 'Authentication failed: ' . $result->reason());
             return $this->failUnauthorized($result->reason());
         }
 
+        // Get authenticated user
         $user = $authenticator->getUser();
+        
+        log_message('info', 'User authenticated: ' . $user->username);
 
         // Generate access token
         $token = $user->generateAccessToken('api_token');
+        
+        log_message('info', 'Token generated successfully');
 
         return $this->respond([
             'status' => 'success',
@@ -50,6 +63,8 @@ class AuthController extends ResourceController
                     'id'       => $user->id,
                     'username' => $user->username,
                     'email'    => $user->email,
+                    'groups'   => $user->getGroups(),
+                    'permissions' => $user->getPermissions(),
                 ],
                 'token' => $token->raw_token,
             ],

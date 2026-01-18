@@ -1,21 +1,27 @@
 version: 0.2
+
 phases:
   install:
-    runtime-versions:
-      php: 8.1
     commands:
       - echo "buildspec dev: preparing artifact for CPC Manager API"
+
   pre_build:
     commands:
       - rm -rf output || true
       - mkdir -p output
+
   build:
     commands:
       - rsync -av --exclude='.git' api/ output/api/
-      - cp appspec-dev.yml output/appspec.yml
+      - ls -la appspec-dev.yml
+      - cp -v appspec-dev.yml output/appspec.yml
+      - ls -la output/appspec.yml
       - mkdir -p output/scripts
       - rsync -av --exclude='.git' scripts/* output/scripts/ || true
+      - echo "Build output contents:"
+      - ls -la output/
+
 artifacts:
+  base-directory: output
   files:
     - '**/*'
-  base-directory: output

@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
+
 BASE=/var/www/cpc-manager/dev
-sudo rm -rf $BASE/releases/latest || true
-mkdir -p $BASE/releases/latest
-chown -R ec2-user:apache $BASE/releases || true
+
+echo "Running cleanup-dev.sh as $(whoami)"
+
+# Ensure base directories exist
+mkdir -p "$BASE/releases"
+
+# Clean only the staging directory used by CodeDeploy
+if [ -d "$BASE/releases/latest" ]; then
+  rm -rf "$BASE/releases/latest"
+fi
+
+mkdir -p "$BASE/releases/latest"
+
+# Fix ownership (safe even if empty)
+chown -R ec2-user:apache "$BASE/releases"

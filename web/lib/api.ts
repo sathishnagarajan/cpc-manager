@@ -1,11 +1,15 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 class ApiService {
   private api: AxiosInstance;
 
   constructor() {
+    if (!process.env.NEXT_PUBLIC_API_URL) {
+      console.warn('NEXT_PUBLIC_API_URL is not set, using default:', API_URL);
+    }
+    
     this.api = axios.create({
       baseURL: API_URL,
       headers: {
@@ -13,6 +17,7 @@ class ApiService {
       },
     });
 
+    
     // Request interceptor to add token
     this.api.interceptors.request.use(
       (config) => {
